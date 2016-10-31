@@ -1,17 +1,104 @@
 \documentclass{article}
-
-\title{Hw2 - Simple Regression Analysis}
-
+\title{Lab9 - Simple Regression Analysis}
 \author{Liang Hao}
-
 \date{\today}
-
 \begin{document}
-
+\maketitle
 \section{Abstract}
+
+
 In this report we reproduce the main results displayed in section 3.1 \emph{Simple Linear Regression} (chapter 3) of the book \emph{An Introduction to Statistical Learning}.
 
 \section{Introduction}
+
+
 The overall goal of this analysis is to provide advice on how to improve sales of the particular product given the current information. More specifically, the idea is to determine whether there is an association between advertising and sales, and if so, develop an accurate model that can be used to predict sales on the basis of the three media budgets. For this analysis specifically, we primarily consider using simple linear regression.
+<<my-label, eval=TRUE, echo= FALSE>>=
+library(xtable)
+options(xtable.comment = FALSE)
+@
+
+
+\section{Data}
+
+
+The Advertising data set consists of the Sales (in thousands of units) of a particular product in 200 different markets, along with advertising budgets (in thousands of dollars) for the product in each of those markets for three different media: TV, Radio and Newspaper. In this report we focus on the possible relation between TV and Sales. Following is the table for summary statistics for both TV and Sales:
+<<eval =TRUE, echo=FALSE, results='asis'>>=
+load('data/eda-output.txt')
+xtable(bothSummary, caption = 'Summary Statistics')
+@
+
+
+From the table above, the relation between the two variables are not very clear yet. We may also have a look at the histograms of their distribution:
+
+<<eval =TRUE, echo=FALSE, dev = 'png'>>=
+knitr::include_graphics("images/histogram-tv.png")
+@
+
+
+From the *Histogram of TV* above, see that the frequencies over the range are approximately even, with *200-250* highest and *250-300* lowest. We then inspect the distribution of *Sales*:
+
+<<eval =TRUE, echo=FALSE, dev = 'png'>>=
+knitr::include_graphics("images/histogram-sales.png")
+@
+
+
+From the *Histogram of Sales* above, we can see an approximately bell shape distribution, with *10-20* the highest, which we could infer from the summary statistics above. We then explore with the following methodology.
+
+\section{Methodology}
+
+
+We consider one media from the data set, TV, and study its relationship with Sales. The null hypothesis here is that the TV would not have an effect on Sales, and the alternative hypothesis is that TV does have an effect on Sales. For this purpose, we use a simple linear model:
+
+$$
+Sales = \beta_{0} + \beta_{1}TV
+$$
+
+To estimate the coefficients $\beta_{0}$ and $\beta_{1}$, we fit a regression model via the least squares criterion. If the relation did not exist, we would expect $\beta_{1}$ would be close to 0, or the distribution of Sales is relatively independent of the distribution of TV.
+
+\section{Results}
+After fitting the data to a simple linear regression model, we compute the regression coefficients:
+
+<<eval = TRUE, echo=FALSE, results='asis'>>=
+load('data/regression.rData')
+modelInfo = summary(fit)
+xtable(modelInfo$coefficients, caption = "Information about Regression Coefficients")
+@
+
+
+Also, the Standard error of the two parameters are significantly smaller than the actual values of the parameters.
+
+Therfore, we may have enough evidence against the null hypothesis that the two factors are not related. TV does have an effect on Sales.
+
+Futhermore, we can dig deeper into the parameters of the least squares model. The table below shows information about a few important indicators when evaluating a model:
+
+<<eval=TRUE, echo=FALSE,results='asis'>>=
+table2 = matrix(nrow =3, ncol= 2)
+Quantity = c('RSS', 'R2', 'F-stat')
+Value = c(modelInfo$sigma, modelInfo$r.squared, modelInfo$fstatistic[1])
+table2[,1] = Quantity
+table2[,2] = Value
+colnames(table2) = c('Quantity', 'Value')
+xtable(table2, caption = "Regression Quality Indices")
+@
+
+
+We can see that the Residual Sum of Squares and r squared for this model is relatively small, meaning that the simple linear regression model is a relatively good fit of the data.
+
+And we plot the scattor plot with the fitted regression line.
+
+<<eval=TRUE, echo=FALSE, dev='png'>>=
+knitr::include_graphics("images/scatterplot-tv-sales.png")
+@
+
+
+As we can see from the scattor plot above, the regression line approxiates most the the relation between TV and Sales.
+
+\section{Conclusions}
+
+
+From the analysis above, we may see that TV does have an effect on Sales, and the simple linear regression does a relatively good job in capturing such relation.
+
+Thinking ahead, we may consider incorporating other factors in the model to have a even better approximation on how it will go, with the hope that we can make more accurate predictions and thus decisions.
 
 \end{document}
