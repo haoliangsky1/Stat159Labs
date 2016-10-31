@@ -1,0 +1,17 @@
+\documentclass{article}
+
+\title{Hw2 - Simple Regression Analysis}
+
+\author{Liang Hao}
+
+\date{\today}
+
+\begin{document}
+
+\section{Abstract}
+In this report we reproduce the main results displayed in section 3.1 \emph{Simple Linear Regression} (chapter 3) of the book \emph{An Introduction to Statistical Learning}.
+
+\section{Introduction}
+The overall goal of this analysis is to provide advice on how to improve sales of the particular product given the current information. More specifically, the idea is to determine whether there is an association between advertising and sales, and if so, develop an accurate model that can be used to predict sales on the basis of the three media budgets. For this analysis specifically, we primarily consider using simple linear regression.
+
+\end{document}
